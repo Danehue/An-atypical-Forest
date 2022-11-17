@@ -171,7 +171,7 @@ public class Player : MonoBehaviour
                 anim.SetBool("repair", true);
                 repairTime += Time.deltaTime;
                 Debug.Log(repairTime);
-                if(repairTime >= 9)
+                if(repairTime >= 10)
                 {
                     sliderLightPlane.value = player_boxes;
                 }
