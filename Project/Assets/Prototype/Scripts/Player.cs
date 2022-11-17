@@ -27,14 +27,12 @@ public class Player : MonoBehaviour
     private float repairTime;
     private bool repairing;
 
-    // Start is called before the first frame update
     void Start()
     {
         controller = GetComponent<CharacterController>();
         player_hp = 500;
     }
 
-    // Update is called once per frame
     void Update()
     {
         handdleMove();
@@ -113,7 +111,6 @@ public class Player : MonoBehaviour
                         }
 
                         hit.transform.gameObject.GetComponent<Enemy>().death();
-                        // Enemy.staticAudioSource.PlayOneShot(Enemy.staticDammageClip);
                         anim.SetBool("isShooting", false);
                     }
                 }
