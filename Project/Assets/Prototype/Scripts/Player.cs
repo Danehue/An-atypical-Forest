@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
+using System;
 
 public class Player : MonoBehaviour
 {
@@ -25,12 +27,15 @@ public class Player : MonoBehaviour
 
     public Slider sliderLightPlane;
     private float repairTime;
-    private bool repairing;
+    private bool repairing, onePerTime;
+
+    public static event Action lightPlaneEvent;
 
     void Start()
     {
         controller = GetComponent<CharacterController>();
         player_hp = 500;
+        onePerTime = true;
     }
 
     void Update()
@@ -41,6 +46,11 @@ public class Player : MonoBehaviour
         {
             anim.SetTrigger("grab");
             grabAnim = false;
+        }
+
+        if(sliderLightPlane.value >= 5)
+        {
+            lightPlaneEvent?.Invoke();
         }
     }
 
@@ -158,7 +168,7 @@ public class Player : MonoBehaviour
     {
         if(other.transform.CompareTag("LightPlane"))
         {
-            if(player_boxes > 0 && Input.GetKey(KeyCode.Q) && dir == Vector3.zero)
+            if(player_boxes > 0 && Input.GetKey(KeyCode.Q) && dir == Vector3.zero && onePerTime)
             {
                 repairing = true;
                 if(!audioSourceLightPlane.isPlaying)
@@ -167,14 +177,16 @@ public class Player : MonoBehaviour
                 }
                 anim.SetBool("repair", true);
                 repairTime += Time.deltaTime;
-                Debug.Log(repairTime);
-                if(repairTime >= 10)
+                if(repairTime >= 10 )
                 {
-                    sliderLightPlane.value = player_boxes;
+                    sliderLightPlane.value++;
+                    player_boxes--;
+                    onePerTime = false;
                 }
             }
             else
             {
+                onePerTime = true;  
                 repairing = false;
                 audioSourceLightPlane.Stop();
                 repairTime = 0;
