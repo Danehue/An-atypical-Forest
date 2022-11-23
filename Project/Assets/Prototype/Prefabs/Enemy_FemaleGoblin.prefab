@@ -208,6 +208,7 @@ MonoBehaviour:
   isAlive: 0
   instantiaiteBlood: 0
   timer: 0
+  timePatrolling: 0
   player: {fileID: 0}
   rb: {fileID: 0}
   audioSource: {fileID: 4599189617272392292}
@@ -216,6 +217,7 @@ MonoBehaviour:
   anim: {fileID: 4599189616544457144}
   coin: {fileID: 119652002178631311, guid: e5c754422efa08449808d1af834f9794, type: 3}
   box: {fileID: 4298432472287580507, guid: 2581a33e8f5af5d43ba98d6f562dc1f9, type: 3}
+  life: {fileID: 6033741427794433986, guid: 1b3a40c26d128224fa0af1278efdcc68, type: 3}
 --- !u!1001 &4599189615770399561
 PrefabInstance:
   m_ObjectHideFlags: 0

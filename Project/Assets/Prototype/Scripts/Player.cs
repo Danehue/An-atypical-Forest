@@ -21,6 +21,7 @@ public class Player : MonoBehaviour
     public AudioSource audioSourceLightPlane;
     public AudioClip player_hit; 
     public AudioClip player_repair;
+    public AudioClip player_coin;
 
     public Animator anim;
     private static bool grabAnim = false;
@@ -42,6 +43,7 @@ public class Player : MonoBehaviour
     {
         handdleMove();
         attack();
+        invisibility();
         if(grabAnim)
         {
             anim.SetTrigger("grab");
@@ -158,8 +160,15 @@ public class Player : MonoBehaviour
     {
         if(other.transform.CompareTag("Coin"))
         {
+            audioSource.PlayOneShot(player_coin);
             other.gameObject.SetActive(false);
             player_score ++;
+        }
+        if(other.transform.CompareTag("Life"))
+        {
+            player_hp += 100;
+            other.gameObject.SetActive(false);
+            Debug.Log(player_hp);
         }
         
     }   
@@ -193,6 +202,18 @@ public class Player : MonoBehaviour
                 anim.SetBool("repair", false);  
             }
             
+        }
+    }
+
+    void invisibility()
+    {
+        if(Input.GetKeyDown(KeyCode.P))
+        {
+            Enemy.followDistance = 5;
+        }
+        if(Input.GetKeyDown(KeyCode.O))
+        {
+            Enemy.followDistance = 30;
         }
     }
 }
