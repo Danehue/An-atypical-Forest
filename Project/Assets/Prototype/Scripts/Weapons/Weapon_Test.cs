@@ -9,6 +9,8 @@ public class Weapon_Test : MonoBehaviour
     public GameObject m16;
     public GameObject ak47;
 
+    public static GameObject purchasedWeapon;
+
     public GameObject redLine;
 
     public static GameObject currentWeapon;
@@ -16,46 +18,29 @@ public class Weapon_Test : MonoBehaviour
     void Start()
     {
         currentWeapon = knife;
+        purchasedWeapon = null; 
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.R))
+        if(Input.GetKeyDown(KeyCode.Alpha1))
         {
-            if(Player.player_score >= 10)
-            {
-                currentWeapon.SetActive(false);
-                revolver.SetActive(true);
-                redLine.SetActive(true);
-                currentWeapon = revolver;
-                revolver.GetComponent<Weapon>().Start(); 
-                Player.player_score -= 10;
-            }
-        }
-        else if(Input.GetKeyDown(KeyCode.E))
-        {
-            currentWeapon.SetActive(false);
+            changeWeapon(knife);
             redLine.SetActive(false);
-            knife.SetActive(true);
-            currentWeapon = knife;
-            knife.GetComponent<Weapon>().Start();
         }
-        else if(Input.GetKeyDown(KeyCode.Y))
+        else if(Input.GetKeyDown(KeyCode.Alpha2))
         {
-            currentWeapon.SetActive(false);
-            m16.SetActive(true);
-            redLine.SetActive(true);
-            currentWeapon = m16;
-            m16.GetComponent<Weapon>().Start();
+            changeWeapon(purchasedWeapon);
         }
-        else if(Input.GetKeyDown(KeyCode.T))
-        {
-            currentWeapon.SetActive(false);
-            ak47.SetActive(true);
-            redLine.SetActive(true);
-            currentWeapon = ak47;
-            ak47.GetComponent<Weapon>().Start();
-        }
+    }
+
+    public void changeWeapon(GameObject weapon)
+    {
+        currentWeapon.SetActive(false);
+        weapon.SetActive(true);
+        currentWeapon = weapon;
+        redLine.SetActive(true);
+        weapon.GetComponent<Weapon>().Start();
     }
 }

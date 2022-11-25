@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class TheGame_UI : MonoBehaviour
@@ -10,18 +11,16 @@ public class TheGame_UI : MonoBehaviour
     public GameObject pauseMenu;
     public GameObject controlsMenu;
     public GameObject hud;
-
-    // public Text score;
+    public GameObject market;
 
     private float score_point;
     private bool paused = false;
-    // Start is called before the first frame update
+
     void Start()
     {
-        
+
     }
 
-    // Update is called once per frame
     void Update()
     {
         togglePause();
@@ -33,10 +32,10 @@ public class TheGame_UI : MonoBehaviour
         else
         {
             Time.timeScale = 1;
+            toggleMarket();
         }
 
         score_point += Time.deltaTime;
-        // score.text = "Score: " + Mathf.Round(score_point);
     }
 
     void togglePause()
@@ -67,6 +66,7 @@ public class TheGame_UI : MonoBehaviour
     {
         pauseMenu.SetActive(true);
         hud.SetActive(false);
+        market.SetActive(false);
         paused = true;
     }
 
@@ -86,6 +86,26 @@ public class TheGame_UI : MonoBehaviour
 
     public void exit()
     {
-        Debug.Log("Se cerró el juego");
+        Application.Quit();
+    }
+
+    public void backToMain()
+    {
+        SceneManager.LoadScene(0);
+    }
+
+    public void toggleMarket()
+    {
+        if(Input.GetKeyDown(KeyCode.LeftControl) && market.activeInHierarchy == false)
+        {
+            market.SetActive(true);
+            hud.SetActive(false);
+
+        }
+        else if(Input.GetKeyDown(KeyCode.LeftControl) && market.activeInHierarchy == true)
+        {
+            market.SetActive(false);
+            hud.SetActive(true);
+        }
     }
 }

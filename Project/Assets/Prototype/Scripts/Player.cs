@@ -11,6 +11,8 @@ public class Player : MonoBehaviour
     public static float player_hp, player_dammage, player_score, player_boxes;
     Vector3 dir;
     float getInterval, timer;
+    public static float timer2 = 0;
+    bool invisibility = false;
 
     [SerializeField] private Camera mainCamera;
     [SerializeField] private LayerMask layerMask;
@@ -22,6 +24,7 @@ public class Player : MonoBehaviour
     public AudioClip player_hit; 
     public AudioClip player_repair;
     public AudioClip player_coin;
+    public AudioClip player_life;
 
     public Animator anim;
     private static bool grabAnim = false;
@@ -31,19 +34,23 @@ public class Player : MonoBehaviour
     private bool repairing, onePerTime;
 
     public static event Action lightPlaneEvent;
+    public static event Action deathPlayer;
+    public static event Action lightPlaneEscapeEvent;
+
+    public GameObject pressE;
 
     void Start()
     {
         controller = GetComponent<CharacterController>();
         player_hp = 500;
         onePerTime = true;
+        sliderLightPlane.interactable = false;
     }
 
     void Update()
     {
         handdleMove();
         attack();
-        invisibility();
         if(grabAnim)
         {
             anim.SetTrigger("grab");
@@ -52,7 +59,29 @@ public class Player : MonoBehaviour
 
         if(sliderLightPlane.value >= 5)
         {
+            anim.SetBool("repair", false);
+            audioSourceLightPlane.Stop();
             lightPlaneEvent?.Invoke();
+            pressE.SetActive(true);
+            if(Input.GetKeyDown(KeyCode.E))
+            {
+                gameObject.SetActive(false);
+                lightPlaneEscapeEvent?.Invoke();
+            }
+        }
+
+        if(invisibility)
+        {
+            timer2 -= Time.deltaTime;
+            Enemy.followDistance = 5;
+            Debug.Log("5");
+            if(timer2 <= 0)
+            {
+                Debug.Log("10");
+                Enemy.followDistance = 30;
+                timer2 = 10;
+                invisibility = false;
+            }
         }
     }
 
@@ -152,7 +181,8 @@ public class Player : MonoBehaviour
         anim.SetBool("repair", false);
         if(player_hp <= 0)
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
+            deathPlayer?.Invoke();
         }
     }
 
@@ -166,9 +196,9 @@ public class Player : MonoBehaviour
         }
         if(other.transform.CompareTag("Life"))
         {
-            player_hp += 100;
+            audioSource.PlayOneShot(player_life);
+            player_hp = 500;
             other.gameObject.SetActive(false);
-            Debug.Log(player_hp);
         }
         
     }   
@@ -205,15 +235,11 @@ public class Player : MonoBehaviour
         }
     }
 
-    void invisibility()
+    public void buyPower()
     {
-        if(Input.GetKeyDown(KeyCode.P))
-        {
-            Enemy.followDistance = 5;
-        }
-        if(Input.GetKeyDown(KeyCode.O))
-        {
-            Enemy.followDistance = 30;
-        }
+        invisibility = true;
+        timer2 = 10;
+        // hud.SetActive(true);
+        // market.SetActive(false);
     }
 }

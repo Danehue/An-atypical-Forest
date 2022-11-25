@@ -21,4 +21,9 @@ public class Singleton : MonoBehaviour
     {
         SceneManager.LoadScene(1);
     }
+
+    public void restart()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
 }
