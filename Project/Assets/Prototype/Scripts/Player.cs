@@ -162,7 +162,7 @@ public class Player : MonoBehaviour
 
     public static void grabObject(GameObject box)
     {
-        if(Input.GetKeyDown(KeyCode.Q))
+        if(Input.GetKeyDown(KeyCode.E))
         {
             box.SetActive(false);
             player_boxes ++;
@@ -207,7 +207,7 @@ public class Player : MonoBehaviour
     {
         if(other.transform.CompareTag("LightPlane"))
         {
-            if(player_boxes > 0 && Input.GetKey(KeyCode.Q) && dir == Vector3.zero && onePerTime)
+            if(player_boxes > 0 && Input.GetKey(KeyCode.E) && dir == Vector3.zero && onePerTime)
             {
                 repairing = true;
                 if(!audioSourceLightPlane.isPlaying)
@@ -239,7 +239,5 @@ public class Player : MonoBehaviour
     {
         invisibility = true;
         timer2 = 10;
-        // hud.SetActive(true);
-        // market.SetActive(false);
     }
 }
